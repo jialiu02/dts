@@ -111,8 +111,10 @@ class PmdOutput():
         else:
             core_list = self.dut.get_core_list(cores, socket=socket)
         self.coremask = create_mask(core_list)
-        command = "./%s/app/testpmd -c %s -n %d %s -- -i %s" \
-            % (self.dut.target, self.coremask, self.dut.get_memory_channels(), eal_param, param)
+        # command = "./%s/app/testpmd -c %s -n %d %s -- -i %s" \
+        #    % (self.dut.target, self.coremask, self.dut.get_memory_channels(), eal_param, param)
+        command = "/usr/bin/testpmd -c %s -n %d %s -- -i %s --disable-hw-vlan-filter" \
+            % (self.coremask, self.dut.get_memory_channels(), eal_param, param)
         if "cavium" in self.dut.nic_type:
             # thunder nicvf does not support hw vlan filter, the application crashes
             # without this option added

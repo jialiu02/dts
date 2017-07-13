@@ -67,7 +67,8 @@ class DPDKdut(Dut):
         # These have to be setup all the time. Some tests need to compile
         # example apps by themselves and will fail otherwise.
         self.send_expect("export RTE_TARGET=" + target, "#")
-        self.send_expect("export RTE_SDK=`pwd`", "#")
+        # self.send_expect("export RTE_SDK=`pwd`", "#")
+        self.send_expect("export RTE_SDK=/usr/share/dpdk", "#")
 
         self.set_rxtx_mode()
 
@@ -182,7 +183,8 @@ class DPDKdut(Dut):
         self.send_expect("rm -rf %s" % r'./app/test/test_pci_sysfs.res.o' , "#")
 
         # compile
-        out = self.send_expect("make -j install T=%s %s" % (target, extra_options), "# ", build_time)
+        out = ""
+        # out = self.send_expect("make -j install T=%s %s" % (target, extra_options), "# ", build_time)
         #should not check test app compile status, because if test compile fail,
         #all unit test can't exec, but others case will exec sucessfull 
         self.build_install_dpdk_test_app(target, build_time)
@@ -229,8 +231,18 @@ class DPDKdut(Dut):
         if os_type == "freebsd":
             cmd_build_test = "make -j -C test/ CC=gcc48"
 
-        self.send_expect(cmd_build_test, "# ", build_time)
-        app_list = ['./test/test/test', './test/test-acl/testacl', './test/test-pipeline/testpipeline', './test/cmdline_test/cmdline_test']
+	d = self.send_command("ls")
+        if "test" in d:
+            self.send_expect(cmd_build_test, "# ", build_time)
+            app_list = ['./test/test/test', './test/test-acl/testacl', './test/test-pipeline/testpipeline', './test/cmdline_test/cmdline_test']
+        else:
+            self.send_expect("make -j -C app/test", "# ", build_time)
+            self.send_expect("make -j -C app/test-acl", "# ", build_time)
+            self.send_expect("make -j -C app/test-pipeline", "# ", build_time)
+            self.send_expect("make -j -C app/test-cmdline_test", "# ", build_time)
+            app_list = ['./app/test/test', './app/test-acl/testacl', './app/test-pipeline/testpipeline', './app/cmdline_test/cmdline_test']
+
+        self.send_expect('mkdir -p ./%s/app' % (target), "# ", 30)
         for app in app_list:
             self.send_expect('cp -f %s ./%s/app' % (app, target), "# ", 30)
          

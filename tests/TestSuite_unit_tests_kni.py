@@ -57,7 +57,8 @@ class TestUnitTestsKni(TestCase):
         if "rte_kni" in out:
             self.dut.send_expect('rmmod rte_kni.ko', "# ")
 
-        out = self.dut.send_expect('insmod ./%s/kmod/rte_kni.ko lo_mode=lo_mode_fifo' % (self.target), "# ")
+        # out = self.dut.send_expect('insmod ./%s/kmod/rte_kni.ko lo_mode=lo_mode_fifo' % (self.target), "# ")
+        out = self.dut.send_expect('modprobe rte_kni lo_mode=lo_mode_fifo', "# ")
 
         self.verify("Error" not in out, "Error loading KNI module: " + out)
 

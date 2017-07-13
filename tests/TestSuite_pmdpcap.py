@@ -124,13 +124,13 @@ class TestPmdPcap(TestCase):
         self.create_pcap_file(in_pcap, TestPmdPcap.pcap_file_sizes[0])
         self.dut.session.copy_file_to(in_pcap)
 
-        command = ("./{}/app/testpmd -c {} -n {} " +
+        command = ("/usr/bin/testpmd -c {} -n {} " +
                    "--vdev=eth_pcap0,rx_pcap={},tx_pcap={} " +
                    "-- -i --port-topology=chained")
         if "cavium" in self.dut.nic_type:
             command += " --disable-hw-vlan-filter"
 
-        self.dut.send_expect(command.format(self.target, core_mask,
+        self.dut.send_expect(command.format(core_mask,
                              self.memory_channel,
                              TestPmdPcap.dut_pcap_files_path + in_pcap,
                              out_pcap), 'testpmd> ', 15)
@@ -159,14 +159,14 @@ class TestPmdPcap(TestCase):
         self.create_pcap_file(in_pcap2, TestPmdPcap.pcap_file_sizes[1])
         self.dut.session.copy_file_to(in_pcap2)
 
-        command = ("./{}/app/testpmd -c {} -n {} " +
+        command = ("/usr/bin/testpmd -c {} -n {} " +
                    "--vdev=eth_pcap0,rx_pcap={},tx_pcap={} " +
                    "--vdev=eth_pcap1,rx_pcap={},tx_pcap={} " +
                    "-- -i")
         if "cavium" in self.dut.nic_type:
             command += " --disable-hw-vlan-filter"
 
-        self.dut.send_expect(command.format(self.target, core_mask,
+        self.dut.send_expect(command.format(core_mask,
                                             self.memory_channel,
                                             TestPmdPcap.dut_pcap_files_path +
                                             in_pcap1,

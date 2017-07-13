@@ -60,6 +60,7 @@ class TestUnitTestsDump(TestCase):
         Nothing to do here.
         """
         # Based on h/w type, choose how many ports to use
+        print("test", self.nic)
         self.dut_ports = self.dut.get_ports(self.nic)
         self.verify(len(self.dut_ports) >= 1, "Insufficient ports for testing")
         self.start_test_time = 60
@@ -85,7 +86,7 @@ class TestUnitTestsDump(TestCase):
         """
         Run history log dump test case.
         """
-        self.dut.send_expect("./%s/app/testpmd -n 1 -c f -- -i" % (self.target), "testpmd>", self.start_test_time)
+        self.dut.send_expect("/usr/bin/testpmd -n 1 -c f -- -i --disable-hw-vlan-filter", "testpmd>", self.start_test_time)
         out = self.dut.send_expect("dump_ring", "testpmd>", self.run_cmd_time)
         self.dut.send_expect("quit", "# ")
         match_regex = "ring <(.*?)>@0x(.*)\r\n"
@@ -100,7 +101,7 @@ class TestUnitTestsDump(TestCase):
         """
         Run mempool dump test case.
         """
-        self.dut.send_expect("./%s/app/testpmd -n 1 -c f -- -i" % (self.target), "testpmd>", self.start_test_time)
+        self.dut.send_expect("/usr/bin/testpmd -n 1 -c f -- -i --disable-hw-vlan-filter", "testpmd>", self.start_test_time)
         out = self.dut.send_expect("dump_mempool", "testpmd>", self.run_cmd_time * 2)
         self.dut.send_expect("quit", "# ")
         match_regex = "mempool <(.*?)>@0x(.*?)\r\n"
@@ -133,7 +134,7 @@ class TestUnitTestsDump(TestCase):
         """
         Run memzone dump test case.
         """
-        self.dut.send_expect("./%s/app/testpmd -n 1 -c f -- -i" % (self.target), "testpmd>", self.start_test_time)
+        self.dut.send_expect("/usr/bin/testpmd -n 1 -c f -- -i --disable-hw-vlan-filter", "testpmd>", self.start_test_time)
         out = self.dut.send_expect("dump_memzone", "testpmd>", self.run_cmd_time * 2)
         self.dut.send_expect("quit", "# ")
 

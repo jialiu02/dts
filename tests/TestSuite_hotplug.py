@@ -85,7 +85,7 @@ class TestPortHotPlug(TestCase):
         """
         first run testpmd after attach port
         """
-        cmd = "./x86_64-native-linuxapp-gcc/app/testpmd -c %s -n %s -- -i" % (self.coremask,self.dut.get_memory_channels())
+        cmd = "/usr/bin/testpmd -c %s -n %s -- -i --disable-hw-vlan-filter" % (self.coremask,self.dut.get_memory_channels())
         self.dut.send_expect(cmd,"testpmd>",60)
         session_secondary = self.dut.new_session()
         session_secondary.send_expect("./tools/dpdk-devbind.py --bind=igb_uio %s" % self.dut.ports_info[self.port]['pci'], "#", 60)
@@ -124,7 +124,7 @@ class TestPortHotPlug(TestCase):
         session_secondary = self.dut.new_session()
         session_secondary.send_expect("./usertools/dpdk-devbind.py --bind=igb_uio %s" % self.dut.ports_info[self.port]['pci'], "#", 60)
         self.dut.close_session(session_secondary)
-        cmd = "./x86_64-native-linuxapp-gcc/app/testpmd -c %s -n %s -- -i" % (self.coremask,self.dut.get_memory_channels())
+        cmd = "/usr/bin/testpmd -c %s -n %s -- -i --disable-hw-vlan-filter" % (self.coremask,self.dut.get_memory_channels())
         self.dut.send_expect(cmd,"testpmd>",60)
         self.detach(self.port)
         self.attach(self.port)

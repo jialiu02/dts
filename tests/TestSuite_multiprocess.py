@@ -61,6 +61,8 @@ class TestMultiprocess(TestCase, IxiaPacketGenerator):
         out = self.dut.build_dpdk_apps("./examples/multi_process/")
         self.verify('Error' not in out, "Compilation failed")
 
+        self.dut.alt_session.send_expect("cd dpdk/examples/multi_process/simple_mp && ln -s . simple_mp && cd -", "# ", 5)
+
         executions.append({'nprocs': 1, 'cores': '1S/1C/1T', 'pps': 0})
         executions.append({'nprocs': 2, 'cores': '1S/1C/2T', 'pps': 0})
         executions.append({'nprocs': 2, 'cores': '1S/2C/1T', 'pps': 0})
