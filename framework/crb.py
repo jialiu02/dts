@@ -270,9 +270,10 @@ class Crb(object):
         for i in range(len(match)):
             #check if device is cavium and check its linkspeed, append only if it is 10G
             if "177d:" in match[i][1]:
-                linkspeed = "10000"
-                nic_linkspeed = self.send_command("cat /sys/bus/pci/devices/%s/net/*/speed" % match[i][0])
-                if nic_linkspeed == linkspeed:
+                # linkspeed = "10000"
+                # nic_linkspeed = self.send_command("cat /sys/bus/pci/devices/%s/net/*/speed" % match[i][0])
+                # if nic_linkspeed == linkspeed:
+                if match[i][0] in ["0002:01:00.2", "0002:01:00.3"]:
                     self.pci_devices_info.append((match[i][0], match[i][1]))
             else:
                 self.pci_devices_info.append((match[i][0], match[i][1]))
