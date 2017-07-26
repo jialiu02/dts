@@ -228,6 +228,7 @@ class DPDKdut(Dut):
 
     def build_install_dpdk_test_app(self, target, build_time, os_type="linux"):
         cmd_build_test = "make -j -C test/"
+        cmd_build_test = cmd_build_test + " EXTRA_CFLAGS+='-I/usr/include/aarch64-linux-gnu/dpdk'"
         if os_type == "freebsd":
             cmd_build_test = "make -j -C test/ CC=gcc48"
 
@@ -361,6 +362,7 @@ class DPDKdut(Dut):
             timeout = 300
         else:
             timeout = 90
+        extra_options = extra_options + " EXTRA_CFLAGS+='-I/usr/include/aarch64-linux-gnu/dpdk'"
         self.send_expect("rm -rf %s" % r'./app/test/test_resource_c.res.o' , "#")
         self.send_expect("rm -rf %s" % r'./app/test/test_resource_tar.res.o' , "#")
         self.send_expect("rm -rf %s" % r'./app/test/test_pci_sysfs.res.o' , "#")
