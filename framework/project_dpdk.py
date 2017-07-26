@@ -105,6 +105,7 @@ class DPDKdut(Dut):
             self.send_expect("modprobe vfio-pci", "#", 70)
             out = self.send_expect("lsmod | grep vfio_iommu_type1", "#")
             assert ("vfio_iommu_type1" in out), "Failed to setup vfio-pci"
+            self.send_expect("echo 1 > /sys/module/vfio/parameters/enable_unsafe_noiommu_mode", "#", 70)
         else:
             self.send_expect("modprobe uio", "#", 70)
             out = self.send_expect("lsmod | grep igb_uio", "#")
