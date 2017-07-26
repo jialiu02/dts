@@ -86,7 +86,7 @@ class TestUnitTestsDump(TestCase):
         """
         Run history log dump test case.
         """
-        self.dut.send_expect("/usr/bin/testpmd -n 1 -c f -- -i --disable-hw-vlan-filter", "testpmd>", self.start_test_time)
+        self.dut.send_expect("/usr/bin/testpmd -n 1 -c f -- -i", "testpmd>", self.start_test_time)
         out = self.dut.send_expect("dump_ring", "testpmd>", self.run_cmd_time)
         self.dut.send_expect("quit", "# ")
         match_regex = "ring <(.*?)>@0x(.*)\r\n"
@@ -101,7 +101,7 @@ class TestUnitTestsDump(TestCase):
         """
         Run mempool dump test case.
         """
-        self.dut.send_expect("/usr/bin/testpmd -n 1 -c f -- -i --disable-hw-vlan-filter", "testpmd>", self.start_test_time)
+        self.dut.send_expect("/usr/bin/testpmd -n 1 -c f -- -i", "testpmd>", self.start_test_time)
         out = self.dut.send_expect("dump_mempool", "testpmd>", self.run_cmd_time * 2)
         self.dut.send_expect("quit", "# ")
         match_regex = "mempool <(.*?)>@0x(.*?)\r\n"
@@ -134,7 +134,7 @@ class TestUnitTestsDump(TestCase):
         """
         Run memzone dump test case.
         """
-        self.dut.send_expect("/usr/bin/testpmd -n 1 -c f -- -i --disable-hw-vlan-filter", "testpmd>", self.start_test_time)
+        self.dut.send_expect("/usr/bin/testpmd -n 1 -c f -- -i", "testpmd>", self.start_test_time)
         out = self.dut.send_expect("dump_memzone", "testpmd>", self.run_cmd_time * 2)
         self.dut.send_expect("quit", "# ")
 
