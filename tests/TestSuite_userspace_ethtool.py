@@ -57,11 +57,12 @@ class TestUserspaceEthtool(TestCase, IxiaPacketGenerator):
         self.verify(len(self.ports) >= 2, "No ports found for " + self.nic)
 
         # build sample app
-        out = self.dut.send_expect("make -C examples/ethtool", "# ")
+        out = self.dut.send_expect("make -C examples/ethtool EXTRA_CFLAGS+='-I/usr/include/aarch64-linux-gnu/dpdk'", "# ")
+        print out
         self.verify("Error" not in out, "compilation error 1")
         self.verify("No such file" not in out, "compilation error 2")
 
-        path = "./examples/ethtool/ethtool-app/ethtool-app/%s/ethtool" % self.target
+        path = "./examples/ethtool/ethtool-app/%s/ethtool" % self.target
         self.cmd = "%s -c f -n %d" % (path, self.dut.get_memory_channels())
 
         # pause frame basic configuration
@@ -79,7 +80,8 @@ class TestUserspaceEthtool(TestCase, IxiaPacketGenerator):
         pass
 
     def build_ethtool(self):
-        out = self.dut.send_expect("make -C examples/ethtool", "# ")
+        out = self.dut.send_expect("make -C examples/ethtool EXTRA_CFLAGS+='-I/usr/include/aarch64-linux-gnu/dpdk'", "# ")
+        print out
         self.verify("Error" not in out, "compilation error 1")
         self.verify("No such file" not in out, "compilation error 2")
 
