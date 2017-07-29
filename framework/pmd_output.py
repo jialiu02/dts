@@ -119,7 +119,8 @@ class PmdOutput():
             # thunder nicvf does not support hw vlan filter, the application crashes
             # without this option added
             command += " --disable-hw-vlan-filter"
-        out = self.dut.send_expect(command, "testpmd> ", 120)
+        # out = self.dut.send_expect(command, "testpmd> ", 120)
+        out = self.dut.send_expect(command, "Link Up", 120)
         self.command = command
         return out
 

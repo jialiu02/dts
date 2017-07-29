@@ -81,7 +81,8 @@ class TestDynamicConfig(TestCase):
         if "cavium" in get_nic_name(self.dut.ports_info[0]['type']):
             cmd += " --disable-hw-vlan-filter"
 
-        self.dut.send_expect("%s" % cmd, "testpmd> ", 120)
+        # self.dut.send_expect("%s" % cmd, "testpmd> ", 120)
+        self.dut.send_expect("%s" % cmd, "Link Up", 120)
 
         # get dest address from self.target port
         out = self.dut.send_expect(
@@ -122,7 +123,8 @@ class TestDynamicConfig(TestCase):
         if "cavium" in get_nic_name(self.dut.ports_info[0]['type']):
             cmd += " --disable-hw-vlan-filter"
 
-        self.dut.send_expect("%s" % cmd, "testpmd> ", 120)
+        # self.dut.send_expect("%s" % cmd, "testpmd> ", 120)
+        self.dut.send_expect("%s" % cmd, "Link Up", 120)
         self.dut.send_expect("start", "testpmd> ", 120)
 
 
